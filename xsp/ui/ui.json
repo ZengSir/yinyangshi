@@ -1,0 +1,118 @@
+{
+   "style" : "default",
+   "config" : "save_yinyangshi.dat",
+   "width" : 540,
+   "height" : 960,
+   "cancelname" : "取消",
+   "okname" : "确定",
+   "views" : [
+      {
+         "id" : "group1",
+         "width" : 1800,
+         "height" : 130,
+         "type" : "LinearLayout",
+         "valign" : "center",
+         "views" : [
+            {
+               "id" : "妖怪发现_name",
+               "list" : "妖怪发现",
+               "select" : "",
+               "size" : "25",
+               "type" : "CheckBoxGroup",
+               "orientation" : "horizontal",
+               "width" : 200
+            },
+            {
+               "id" : "妖怪发现_times",
+               "align" : "center",
+               "color" : "0,0,0",
+               "kbtype" : "number",
+               "prompt" : "",
+               "size" : "25",
+               "text" : "0",
+               "type" : "Edit",
+               "width" : 100
+            },
+            {
+               "align" : "left",
+               "color" : "0,0,0",
+               "size" : "25",
+               "text" : "次",
+               "type" : "Label",
+               "width" : 30
+            },
+            {
+               "id" : "妖怪发现_chapter",
+               "list" : "第一章,第二章,第十八章",
+               "select" : "0",
+               "size" : "25",
+               "type" : "ComboBox",
+               "width" : 220
+            },
+            {
+               "id" : "妖怪发现_fightType",
+               "list" : "全部打,只打经验怪,打经验和金钱怪",
+               "select" : "0",
+               "size" : "25",
+               "type" : "ComboBox",
+               "width" : 350
+            },
+            {
+               "id" : "妖怪发现_attackBoss",
+               "list" : "不打boss",
+               "select" : "0",
+               "size" : "25",
+               "type" : "CheckBoxGroup",
+               "orientation" : "horizontal",
+               "width" : 200
+            }
+         ]
+      },
+      {
+         "id" : "group2",
+         "width" : 2000,
+         "height" : 130,
+				"valign" : "center",
+         "type" : "LinearLayout",
+         "views" : [
+            {
+               "id" : "只接受邀请_name",
+               "list" : "只接受邀请",
+               "select" : "",
+               "size" : "30",
+               "width" : 250,
+               "type" : "CheckBoxGroup",
+               "orientation" : "horizontal"
+            },
+						{
+	            "id" : "只接受邀请_type",
+	            "list" : "接受所有邀请,接受指定好友邀请",
+	            "select" : "0",
+	            "size" : "30",
+							"width" : 600,
+	            "type" : "RadioGroup",
+	            "orientation" : "horizontal"
+            },
+						{
+	            "align" : "left",
+	            "color" : "0,0,0",
+	            "size" : "30",
+	            "text" : "指定好友名称:",
+	            "type" : "Label",
+	            "width" : 200
+            },
+						{
+	            "id" : "只接受邀请_friendName",
+	            "align" : "center",
+	            "color" : "0,0,0",
+	            "kbtype" : "default",
+	            "prompt" : "请输入",
+	            "size" : "25",
+	            "text" : "",
+	            "type" : "Edit",
+	            "width" : 300
+            }
+         ]
+      }
+   ]
+}
