@@ -9,7 +9,7 @@
       {
          "id" : "group1",
          "width" : 1800,
-         "height" : 130,
+         "height" : 200,
          "type" : "LinearLayout",
          "valign" : "center",
          "views" : [
@@ -20,7 +20,14 @@
                "size" : "25",
                "type" : "CheckBoxGroup",
                "orientation" : "horizontal",
-               "width" : 200
+               "width" : 300
+            },{
+               "align" : "left",
+               "color" : "0,0,0",
+               "size" : "25",
+               "text" : "打",
+               "type" : "Label",
+               "width" : 50
             },
             {
                "id" : "妖怪发现_times",
@@ -39,7 +46,7 @@
                "size" : "25",
                "text" : "次",
                "type" : "Label",
-               "width" : 30
+               "width" : 50
             },
             {
                "id" : "妖怪发现_chapter",
@@ -47,7 +54,7 @@
                "select" : "0",
                "size" : "25",
                "type" : "ComboBox",
-               "width" : 220
+               "width" : 300
             },
             {
                "id" : "妖怪发现_fightType",
@@ -55,7 +62,7 @@
                "select" : "0",
                "size" : "25",
                "type" : "ComboBox",
-               "width" : 350
+               "width" : 400
             },
             {
                "id" : "妖怪发现_attackBoss",
@@ -64,14 +71,14 @@
                "size" : "25",
                "type" : "CheckBoxGroup",
                "orientation" : "horizontal",
-               "width" : 200
+               "width" : 300
             }
          ]
       },
       {
          "id" : "group2",
          "width" : 2000,
-         "height" : 130,
+         "height" : 200,
 				"valign" : "center",
          "type" : "LinearLayout",
          "views" : [
@@ -80,7 +87,7 @@
                "list" : "只接受邀请",
                "select" : "",
                "size" : "30",
-               "width" : 250,
+               "width" : 350,
                "type" : "CheckBoxGroup",
                "orientation" : "horizontal"
             },
@@ -89,7 +96,7 @@
 	            "list" : "接受所有邀请,接受指定好友邀请",
 	            "select" : "0",
 	            "size" : "30",
-							"width" : 600,
+							"width" : 800,
 	            "type" : "RadioGroup",
 	            "orientation" : "horizontal"
             },
@@ -99,7 +106,7 @@
 	            "size" : "30",
 	            "text" : "指定好友名称:",
 	            "type" : "Label",
-	            "width" : 200
+	            "width" : 400
             },
 						{
 	            "id" : "只接受邀请_friendName",
