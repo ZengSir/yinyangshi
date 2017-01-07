@@ -16,15 +16,14 @@ function isPage (pageName)
     --加载自定义字库
     local dic = createOcrDict(lines);
     
-    --因为这个文字会变化， 所以识别三次， 又一次成功即代表成功
-    for tmpi=1,3 do
+    --因为这个文字会变化， 所以识别5次 经历时间1秒， 又一次成功即代表成功
+    for tmpi=1,5 do
       local results = ocrText(dic,955,1168,1254,1223, {"0xfcfdfd-0x999999"}, 95,0,0);
       sysLog("识别出来的文字是："..results);
       if results == "点击屏幕继续" then
         return true;
       end
-      
-      mSleep(300);
+      mSleep(200);
     end
   end
   
@@ -33,15 +32,24 @@ function isPage (pageName)
   if pageName == "战斗页面" then
     sysLog("判断是否为--战斗页面");
     
-    local lines = {};
+		local lines = {};
+    --准备  c46a22-c46a22
+    lines[1] = "0020040180701E07C0F03C0F01C0701C0200000000000000000040080100300700700F01FFBF83E07C0700E01C0380300700E00C01E03E03E07C0780F00E01C0180100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200C0380F01806018060180300800000000000000000000000000600E01F03E07C0F01E03C038060080100$准备$21.33.2688$93";
     --手动  f4eedc-444444
-    lines[1] = "020040080180200C0180700F01E03F8FF1CE700E03C0F01E03C0300200000000000000000000000000000000000000000000000000000000000000000000000000000000000000100200C0180300E01C0380600C0380600C0080100000000000000000000000FFBFF3FE7E0800$手动$9.9.828$47";
+    lines[2] = "020040080180200C0180700F01E03F8FF1CE700E03C0F01E03C0300200000000000000000000000000000000000000000000000000000000000000000000000000000000000000100200C0180300E01C0380600C0380600C0080100000000000000000000000FFBFF3FE7E0800$手动$9.9.828$47";
     --自动	f4eedc-444444
-    lines[2] = "00603C1E0F8FE1F81C03804000000080100600C01801002000000000000000000000000000000000000000000000000000000000000000000000000000000080100600C0180700E01C0300601C0300600400800000000000000000000007FFFFDFFBF0400$自动$6.9.859$45";
+    lines[3] = "00603C1E0F8FE1F81C03804000000080100600C01801002000000000000000000000000000000000000000000000000000000000000000000000000000000080100600C0180700E01C0300601C0300600400800000000000000000000007FFFFDFFBF0400$自动$6.9.859$45";
     
     --加载自定义字库
     local dic = createOcrDict(lines);
-    local results = ocrText(dic,50,1091,167,1200, {"0xf4eedc-0x444444"}, 95,0,0);
+    local results = ocrText(dic,1887,856,2137,1043, {"0xc46a22-0xc46a22"}, 95,0,0);
+    sysLog("识别出来的文字是："..results);
+    if results == "准备" then
+      return true;
+    end
+		
+    --加载自定义字库
+		results = ocrText(dic,50,1091,167,1200, {"0xf4eedc-0x444444"}, 95,0,0);
     sysLog("识别出来的文字是："..results);
     
     if results == "自动"  or results == "手动" then
@@ -84,8 +92,6 @@ function isAlert (alertName)
 end
 
 
-
-
 function isTeam () 
   
   local points = {
@@ -94,7 +100,7 @@ function isTeam ()
     {x = 142 - 86, y = 270 - 215, color = 0x412d2b}
   };
   
-  local x, y = findMultiColorInRegionFuzzy2(0x62441f, points, 100, 9,187,154,538);
+  local x, y = findMultiColorInRegionFuzzy2(0x62441f, points, 95, 9,187,154,538);
   
   if x ~= -1 and y ~= -1 then
     return true;
@@ -125,5 +131,13 @@ function isReceivedInvitation ()
   end
 end
 
+function isCooperation ()
 
+	local isValueType = false; --是否为奖励勾玉或体力任务
+	
+	
+	
+	
+	return false, isValueType;
+end
 

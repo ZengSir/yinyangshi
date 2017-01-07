@@ -41,7 +41,7 @@ if task.name == "只接受邀请" then
   local showStr = task.name;
   showHUD(infoHUD,showStr,18,"0xffff0000","0xffffffff",0,0,0,200,44);
   
-
+  
   --准备工作
   local isFinishPrepareDeal = false;
   while  not isFinishPrepareDeal do
@@ -56,7 +56,7 @@ if task.name == "只接受邀请" then
       mSleep(1000);
       
       tap(1341, 701);
-      mSleep(1000);
+      mSleep(1500);
     end
     
   end
@@ -64,7 +64,7 @@ if task.name == "只接受邀请" then
   --接受邀请
   if isReceivedInvitation() then
     tap(242, 451);
-    mSleep(500);
+    mSleep(1500);
   end
   
 end
@@ -75,6 +75,23 @@ end
 function finishPrepareDeal ()
   --判断弹出框
   --判断是否有协作任务   如果是勾玉或体力奖励，接受
+	local isCooperation, isValueType = isCooperation();
+	if isCooperation then
+	
+		if dealCooperateTaskType == 2 then
+			--拒绝协作任务
+		elseif dealCooperateTaskType == 0 then
+			--接受协作任务
+			
+		elseif isValueType then
+		--接受协作任务
+			
+		else
+		--拒绝协作任务
+		
+		end
+		mSleep(1000);
+	end
   
   --判断是否有弹出框   确认或取消
   
@@ -97,7 +114,6 @@ function finishPrepareDeal ()
     sysLog("识别出来的文字是："..results);
     if results == "准备" then
       tap(2010, 940);
-      mSleep(500);
     end
     
     results = ocrText(dic,50,1091,167,1200, {"0xf4eedc-0x444444"}, 95,0,0);
@@ -105,33 +121,21 @@ function finishPrepareDeal ()
     
     if results == "手动" then
       tap(104,1140);
-      mSleep(500);
     end 
     
-    --加载自定义字库
-    local dic = createOcrDict(lines);
-    local results = ocrText(dic,50,1091,167,1200, {"0xf4eedc-0x444444"}, 95,0,0);
-       
-    --修改为自动战斗
-    --点击准备
-    
+		mSleep(1500);
+
     return false;
-    
   end
-  --如果是结算页面， 点击屏幕 （结算页面很可能连续出现两次）
+	
+	
+  --如果是结算页面， 点击屏幕 （结算页面很可能连续出现三次）
   if isPage("点击屏幕继续") then
     math.randomseed(os.time());
     tap(500 +  1000 * math.random()   , 500 + 500 * math.random());
-    mSleep(500);
-    if isPage("点击屏幕继续") then
-      math.randomseed(os.time());
-      tap(500 +  1000 * math.random()   , 500 + 500 * math.random());
-      mSleep(500);
-    end
-    
+		mSleep(1000);
     return false;
   end
-  
-  
+	
   return true;
 end

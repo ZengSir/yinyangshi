@@ -26,6 +26,7 @@ while true do
   
   showHUD(infoHUD,"正在创建任务···",18,"0xffff0000","0xffffffff",0,0,0,200,44);
   --创建任务
+
   local result = createTaskListWithSetting(setting);
   
   if result then

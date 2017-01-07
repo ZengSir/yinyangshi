@@ -50,7 +50,7 @@
             },
             {
                "id" : "妖怪发现_chapter",
-               "list" : "第一章,第二章,第十八章",
+               "list" : "第一章,第二章,第三章,第四章,第五章,第六章,第七章,第八章,第九章,第十章,第十一章,第十二章,第十三章第十八章",
                "select" : "0",
                "size" : "25",
                "type" : "ComboBox",
@@ -93,31 +93,12 @@
             },
 						{
 	            "id" : "只接受邀请_type",
-	            "list" : "接受所有邀请,接受指定好友邀请",
+	            "list" : "接受所有邀请",
 	            "select" : "0",
 	            "size" : "30",
 							"width" : 800,
 	            "type" : "RadioGroup",
 	            "orientation" : "horizontal"
-            },
-						{
-	            "align" : "left",
-	            "color" : "0,0,0",
-	            "size" : "30",
-	            "text" : "指定好友名称:",
-	            "type" : "Label",
-	            "width" : 400
-            },
-						{
-	            "id" : "只接受邀请_friendName",
-	            "align" : "center",
-	            "color" : "0,0,0",
-	            "kbtype" : "default",
-	            "prompt" : "请输入",
-	            "size" : "25",
-	            "text" : "",
-	            "type" : "Edit",
-	            "width" : 300
             }
          ]
       }

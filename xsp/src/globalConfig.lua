@@ -1,5 +1,5 @@
 --设置常量
-APP_BundleId = "com.netease.onmyoji.xin";
+APP_BundleId = "com.netease.onmyoji";
 
 --全局变量，保存屏幕方向。0:"Home键在下",1:"Home键在右",2:"Home键在左"
 orientation = 1;

@@ -3,35 +3,40 @@ require("doTask");
 
 --任务栈 先进先出
 local taskArray = {};
+--全局设置
+--对协作任务的处理方式  0:表示全部接受， 1:表示只接受 勾玉 或 体力， 2:表示拒绝
+dealCooperateTaskType = 0;
 
 --根据用户设置，创建任务列表
 function createTaskListWithSetting(setting)
+
+	dealCooperateTaskType = setting["协作任务"];
+
   
   if setting["只接受邀请_name"] == "0" then
     local name = "只接受邀请";
-    local friendName = setting["只接受邀请_friendName"];
     local inviteType = setting["只接受邀请_type"];
     
-		local task = {};
-		task.name = name;
-		task.friendName = friendName;
-		task.inviteType = inviteType;
-		printTable(task);
-		
-		--指定邀请人
-		if inviteType == 1 then
-		--指定用户的名字
-			if friendName == "1" then
-				dialogRet(name.."任务需要设置邀请人名字。", "好的","","", 0);
-				mSleep(500);
-				return false;
-			end
-		end
-		
-		table.insert(taskArray, task);
+    local task = {};
+    task.name = name;
+    task.friendName = friendName;
+    task.inviteType = inviteType;
+    printTable(task);
     
-		return true;
-		
+    --指定邀请人
+    if inviteType == 1 then
+      --指定用户的名字
+      if friendName == "1" then
+        dialogRet(name.."任务需要设置邀请人名字。", "好的","","", 0);
+        mSleep(500);
+        return false;
+      end
+    end
+    
+    table.insert(taskArray, task);
+    
+    return true;
+    
   end
   
   if setting["妖怪发现_name"] == "0" then
@@ -80,24 +85,32 @@ end
 
 function startTask () 
   
-	sysLog("开始执行以下任务:");
-	printTable(taskArray);
-	
+  sysLog("开始执行以下任务:");
+  printTable(taskArray);
+  
   while next(taskArray) ~= nil do 
-    local task = taskArray[1];
     
-    if task["name"] == "妖怪发现" then
-      妖怪发现(task);
+    if isFrontApp(APP_BundleId) == 0 then
+      mSleep(3000);
       
-		elseif task.name == "只接受邀请" then
-			只接受邀请(task);
-		
-    elseif task.name == "结界突破" then
-      结界突破(task);
+    else
+      
+      local task = taskArray[1];
+      
+      if task["name"] == "妖怪发现" then
+        妖怪发现(task);
+        
+      elseif task.name == "只接受邀请" then
+        只接受邀请(task);
+        
+      elseif task.name == "结界突破" then
+        结界突破(task);
+        
+      end
+      
+      mSleep(3000);
       
     end
-    
-    mSleep(3000);
     
   end
   
