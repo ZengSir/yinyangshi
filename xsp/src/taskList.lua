@@ -12,7 +12,6 @@ function createTaskListWithSetting(setting)
 
 	dealCooperateTaskType = setting["协作任务"];
 
-  
   if setting["只接受邀请_name"] == "0" then
     local name = "只接受邀请";
     local inviteType = setting["只接受邀请_type"];

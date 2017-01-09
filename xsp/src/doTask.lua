@@ -1,5 +1,6 @@
 
 require("judge");
+require("find");
 
 function 妖怪发现(task)
 
@@ -50,15 +51,20 @@ if task.name == "只接受邀请" then
   
   --如果是在妖怪发现副本里面， 需要根据情况退出
   if isPage("妖怪发现副本") then
+	
     if not isTeam() then
-      --没有在队伍中， 退出副本
+      --没有在队伍中
+			
+			--自动领取宝箱
+			findReward();
+			
+			--退出副本
       tap(84, 110);
       mSleep(1000);
       
       tap(1341, 701);
-      mSleep(1500);
+      mSleep(1000);
     end
-    
   end
   
   --接受邀请
@@ -80,17 +86,22 @@ function finishPrepareDeal ()
 	
 		if dealCooperateTaskType == 2 then
 			--拒绝协作任务
+			tap(1474,896);
 		elseif dealCooperateTaskType == 0 then
 			--接受协作任务
-			
+			tap(1475,725);
 		elseif isValueType then
-		--接受协作任务
-			
+			--接受协作任务
+			tap(1475,725);
+
 		else
-		--拒绝协作任务
-		
+			--拒绝协作任务
+			tap(1474,896);
+
 		end
-		mSleep(1000);
+		mSleep(500);
+		
+		return false;
 	end
   
   --判断是否有弹出框   确认或取消
@@ -123,17 +134,16 @@ function finishPrepareDeal ()
       tap(104,1140);
     end 
     
-		mSleep(1500);
-
+		mSleep(1000);
+		
     return false;
   end
-	
 	
   --如果是结算页面， 点击屏幕 （结算页面很可能连续出现三次）
   if isPage("点击屏幕继续") then
     math.randomseed(os.time());
     tap(500 +  1000 * math.random()   , 500 + 500 * math.random());
-		mSleep(1000);
+		mSleep(500);
     return false;
   end
 	
