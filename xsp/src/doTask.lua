@@ -3,15 +3,40 @@ require("judge");
 require("find");
 
 function 妖怪发现(task)
+	sysLog("妖怪发现任务");
 
 if task.name == "妖怪发现" then
   local showStr = "妖怪发现，第"..task.times.."次";
   showHUD(infoHUD,showStr,18,"0xffff0000","0xffffffff",0,0,0,200,44);
   
+	
+	--准备工作
+  local isFinishPrepareDeal = false;
+  while  not isFinishPrepareDeal do
+    isFinishPrepareDeal = finishPrepareDeal();
+  end
+	
+	--判断当前所在页面
+	if isPage("探索页面") then
+		--进入对应的章节
+		findChapter(task.chapter);
+		
+		--组队或探索
+		if task.makeTeam then
+			--选择组队
+		else
+			--选择探索
+		end
+		
+	end
+	
+	--在其他页面
+
+	
+	--任务结算 点击进入到了对应的章节，并退出一次，表示完成一次任务
   if task.times == 1 then
-    table.remove(taskArray);
     showHUD(infoHUD,"妖怪发现已停止",18,"0xffff0000","0xffffffff",0,0,0,200,44);
-    
+    removeTask(task);
   elseif task.times > 1 then
     task.times = task.times - 1;
   end
@@ -51,19 +76,21 @@ if task.name == "只接受邀请" then
   
   --如果是在妖怪发现副本里面， 需要根据情况退出
   if isPage("妖怪发现副本") then
-	
     if not isTeam() then
       --没有在队伍中
-			
+			--等待3秒，发现宝箱
+			mSleep(3000);
 			--自动领取宝箱
 			findReward();
 			
-			--退出副本
-      tap(84, 110);
-      mSleep(1000);
+			--领取完宝箱之后，判断是否还在妖怪发现副本
+			if isPage("妖怪发现副本") then
+				tap(84, 110);
+				mSleep(1000);
       
-      tap(1341, 701);
-      mSleep(1000);
+				tap(1341, 701);
+				mSleep(1000);
+			end
     end
   end
   
@@ -135,12 +162,11 @@ function finishPrepareDeal ()
     end 
     
 		mSleep(1000);
-		
     return false;
   end
 	
   --如果是结算页面， 点击屏幕 （结算页面很可能连续出现三次）
-  if isPage("点击屏幕继续") then
+  if isTapToContinue() then
     math.randomseed(os.time());
     tap(500 +  1000 * math.random()   , 500 + 500 * math.random());
 		mSleep(500);

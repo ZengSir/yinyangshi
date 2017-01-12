@@ -19,7 +19,6 @@ while true do
   if start == 0 then
     --用户取消，退出脚本
     lua_exit();
-    
   end
   
   printTable(setting);
@@ -31,6 +30,8 @@ while true do
   
   if result then
     break;
+	else
+		dialogRet("创建任务失败，请指定任务。", "确定", "", "", 5);
   end
 	
 end

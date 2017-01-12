@@ -23,6 +23,19 @@ printFunction = function (...)
   sysLog("[调试信息]>>>>"..str)
 end
 
+function convertBooleanToString (temp)
+	if temp == nil then
+		return "没有数据";
+	elseif type(temp) == "boolean" then
+		if temp then
+			return "true";
+		else
+			return "false";
+		end
+	end
+end
+
+
 
 -- 格式化输出table（力荐）
 function printTable (root, notPrint, params)
