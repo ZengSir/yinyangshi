@@ -5,7 +5,21 @@ function isPage (pageName)
   --判断是否是盯
   
   --判断是否是 探索页面
-  
+  if pageName == "探索页面" then
+		sysLog("判断是否为--探索页面");
+    local lines = {};
+    --结界突破  f8f3e0-333333
+    lines[1] = "00201C0783E0F87E1F03C000000000803006004000000000000000100200C0183FFFFFFFFF80F00601C0380701E01C03800000000000000000000000000000000000000781FF3FF7FEF1DE0380701C1BC7FDFFFFFFF9F71CC118020040080303F9FFFFFF9FC0$结界突破$3.11.2060$106";
+		
+    --加载自定义字库
+    local dic = createOcrDict(lines);
+    local results = ocrText(dic,657,1087,782,1216, {"0xf8f3e0-0x333333"}, 95,0,0);
+    sysLog("识别出来的文字是："..results);
+    
+    if results == "结界突破" then
+      return true;
+    end  
+	end
   
   --判断是否是战斗页面 （根据识别自动/手动 图标判断）
   if pageName == "战斗页面" then
@@ -199,3 +213,38 @@ function isCooperation ()
 	return isCooperation, isValueType;
 end
 
+--判断是否是探索或挑战弹出框
+function isExplorationAlert ()
+		local lines = {};
+    --探索  0xfcfaf8-0x666666
+    lines[1] = "201FF3FFBFF7FE780000000000000080301E07C1E0380700C0188300600C0380700C0180300E01C0300601C03DC7F0FE0FC0F00E0180$探索$7.5.1290$109";
+		
+		--加载自定义字库
+    local dic = createOcrDict(lines);
+    local results = ocrText(dic,1860,402,1944,566, {"0xfcfaf8-0x666666"}, 95,0,0);
+    sysLog("识别出来的文字是："..results);
+    
+    if results == "探索" then
+      return true;
+    end  
+  
+  return false;
+end
+
+--判断是否是组队邀请
+function isMakeTeamAlert ()
+			local lines = {};
+    --组队获得  0x272420-0x444444
+    lines[1] = "00201C1F87F07C0F000000000000000000000040180300600C0180300600C0180700E01C0380300600C0000000000000000000000000000000000600F01E03C0780C0380F01F83F07E07806000000000000000000000F83F07E0FC0400000000000000000000000000000000000000000000000000000000000000000180300600C0180700E01C7F8FF1FE1FC0780E0180300600C01803C0F87F7FFFFBFE3FC6780F01E03C0780F01E03C0300000000000000000000000000000000000000080300E03C3F8FE3F07C070040000000200F01FE3FC7F8EF19C338661CC398E31C638D71EFFDFF9FF1F83C0200$组队获得$6.4.2262$43";
+		--加载自定义字库
+    local dic = createOcrDict(lines);
+    local results = ocrText(dic,1028,189,1586,247, {"0x272420-0x444444"}, 95,0,0);
+    sysLog("识别出来的文字是："..results);
+    
+    if results == "组队获得" then
+      return true;
+    end  
+  
+  return false;
+	
+end

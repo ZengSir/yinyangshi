@@ -87,6 +87,13 @@ function createTaskListWithSetting(setting)
 			fightType = "打经验和金钱怪";
 		end
 		
+		local makeTeam = false;
+		if setting["妖怪发现_makeTeam"] == "0" then
+			makeTeam = true;
+		else
+			makeTeam = false;
+		end
+		
     sysLog("name:"..name);
     sysLog("times:"..times);
     sysLog("chapter:"..chapter);
@@ -98,6 +105,7 @@ function createTaskListWithSetting(setting)
 			task.name = name;
 			task.times = times;
 			task.chapter = chapter;
+			task.fightType = fightType;
 			task.attackBoss = attackBoss;
 			table.insert(taskArray, task);
 		end
@@ -143,7 +151,8 @@ function startTask ()
   printTable(taskArray);
   
   while next(taskArray) ~= nil do 
-    
+
+
     if isFrontApp(APP_BundleId) == 0 then
       mSleep(3000);
       

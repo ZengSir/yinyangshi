@@ -3,37 +3,105 @@ require("judge");
 require("find");
 
 function 妖怪发现(task)
-	sysLog("妖怪发现任务");
+sysLog("妖怪发现任务");
 
 if task.name == "妖怪发现" then
   local showStr = "妖怪发现，第"..task.times.."次";
   showHUD(infoHUD,showStr,18,"0xffff0000","0xffffffff",0,0,0,200,44);
   
-	
-	--准备工作
+  
+  --准备工作
   local isFinishPrepareDeal = false;
   while  not isFinishPrepareDeal do
     isFinishPrepareDeal = finishPrepareDeal();
   end
+  
+  --处理是否继续邀请好友
+  
+  
+  --判断当前所在页面
+  if isPage("探索页面") then
+    --进入对应的章节
+    findChapter(task.chapter);
+    
+    sysLog("测试到这里")
+    
+    --[[
+    mSleep(2000);
+    --判断是否是探索或挑战弹出框
+    if isExplorationAlert() then
+      --选择 困难  或者  普通
+      --tap(583,389);	--普通
+      tap(841,377);	--困难
+      mSleep(800);
+      
+      --组队或探索
+      if task.makeTeam then
+        --选择组队
+        tap(1079,913);
+        mSleep(1000);
+        
+        --只选择左上角第一个邀请
+        tap(853,370);
+        
+      else
+        --选择探索
+        tap(1635,922);
+      end
+      
+    end
+    
+    --]]
+    
+    
+  end
+  
+  --如果是在妖怪发现副本里面， 需要根据情况退出
+  if isPage("妖怪发现副本") then
 	
-	--判断当前所在页面
-	if isPage("探索页面") then
-		--进入对应的章节
-		findChapter(task.chapter);
+    --探索副本妖怪
 		
-		--组队或探索
-		if task.makeTeam then
-			--选择组队
-		else
-			--选择探索
-		end
-		
-	end
-	
-	--在其他页面
-
-	
-	--任务结算 点击进入到了对应的章节，并退出一次，表示完成一次任务
+    for tmpi=1,4 do
+      local x, y = findMonster(task.fightType, task.attackBoss);
+      if x ~= -1 and y ~= -1 then
+        tap(x,y);
+        mSleep(1000);
+      else
+        if tmpi <= 2 then
+          --左滑
+          swip(2157,793, 67,811);
+          mSleep(1000);
+        else
+          --右滑
+          swip(67,811, 2157,793);
+          mSleep(1000);
+        end
+      end
+    end
+    
+    --根据是否是组队来处理
+    if not isTeam() then
+      --没有在队伍中
+      --等待3秒，发现宝箱
+      mSleep(3000);
+      --自动领取宝箱
+      findReward();
+      
+      --领取完宝箱之后，判断是否还在妖怪发现副本
+      if isPage("妖怪发现副本") then
+        tap(84, 110);
+        mSleep(1000);
+        
+        tap(1341, 701);
+        mSleep(1000);
+      end
+    end
+  end
+  
+  
+  
+  
+  --任务结算 点击进入到了对应的章节，并退出一次，表示完成一次任务
   if task.times == 1 then
     showHUD(infoHUD,"妖怪发现已停止",18,"0xffff0000","0xffffffff",0,0,0,200,44);
     removeTask(task);
@@ -78,19 +146,19 @@ if task.name == "只接受邀请" then
   if isPage("妖怪发现副本") then
     if not isTeam() then
       --没有在队伍中
-			--等待3秒，发现宝箱
-			mSleep(3000);
-			--自动领取宝箱
-			findReward();
-			
-			--领取完宝箱之后，判断是否还在妖怪发现副本
-			if isPage("妖怪发现副本") then
-				tap(84, 110);
-				mSleep(1000);
+      --等待3秒，发现宝箱
+      mSleep(3000);
+      --自动领取宝箱
+      findReward();
       
-				tap(1341, 701);
-				mSleep(1000);
-			end
+      --领取完宝箱之后，判断是否还在妖怪发现副本
+      if isPage("妖怪发现副本") then
+        tap(84, 110);
+        mSleep(1000);
+        
+        tap(1341, 701);
+        mSleep(1000);
+      end
     end
   end
   
@@ -108,28 +176,28 @@ end
 function finishPrepareDeal ()
   --判断弹出框
   --判断是否有协作任务   如果是勾玉或体力奖励，接受
-	local isCooperation, isValueType = isCooperation();
-	if isCooperation then
-	
-		if dealCooperateTaskType == 2 then
-			--拒绝协作任务
-			tap(1474,896);
-		elseif dealCooperateTaskType == 0 then
-			--接受协作任务
-			tap(1475,725);
-		elseif isValueType then
-			--接受协作任务
-			tap(1475,725);
-
-		else
-			--拒绝协作任务
-			tap(1474,896);
-
-		end
-		mSleep(500);
-		
-		return false;
-	end
+  local isCooperation, isValueType = isCooperation();
+  if isCooperation then
+    
+    if dealCooperateTaskType == 2 then
+      --拒绝协作任务
+      tap(1474,896);
+    elseif dealCooperateTaskType == 0 then
+      --接受协作任务
+      tap(1475,725);
+    elseif isValueType then
+      --接受协作任务
+      tap(1475,725);
+      
+    else
+      --拒绝协作任务
+      tap(1474,896);
+      
+    end
+    mSleep(500);
+    
+    return false;
+  end
   
   --判断是否有弹出框   确认或取消
   
@@ -161,17 +229,31 @@ function finishPrepareDeal ()
       tap(104,1140);
     end 
     
-		mSleep(1000);
+    mSleep(1000);
     return false;
   end
-	
+  
   --如果是结算页面， 点击屏幕 （结算页面很可能连续出现三次）
   if isTapToContinue() then
     math.randomseed(os.time());
     tap(500 +  1000 * math.random()   , 500 + 500 * math.random());
-		mSleep(500);
+    mSleep(500);
     return false;
   end
-	
+  
+  --如果是探索或挑战弹出框， 点击关闭按钮
+  if isExplorationAlert() then
+    tap(1815,254);
+    return false;
+  end
+  
+  
+  --如果是组队邀请弹出框， 点击取消
+  if isMakeTeamAlert() then
+    tap(879,995);
+    return false;
+  end
+  
+  
   return true;
 end
