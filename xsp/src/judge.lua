@@ -139,17 +139,18 @@ function isTapToContinue ()
 	end
 	
 	
-	--胜   
-	lines = {};
-	--0x171615-0x222222
-	lines[1] = "1C07E1FFFFFFFFFFFFFFFFFFFFFFFFFFF7FEFFCFF9FF1FE1FC3F83F03E07C07807006$胜$92.53.8688$109";
-	--0x2b2923-0x222222
-	lines[2] = "100FC1FFBFF7FEFFDFFBFFFFFFFDFFBFF7FE7FC7F8FF1FE1FC1F81F01E03C01801$胜$94.53.7923$110";
-	dict = createOcrDict(lines);
+
 	
-	results = ocrText(dict, 970,637,1238,1045, {"0x171615-0x222222"}, 95, 0, 0);
-	sysLog("识别出来的文字是："..results);
-	if results == "胜" then
+	--奖励信息
+	local x1, y1 = findMultiColorInRegionFuzzy(0x3287cd,"10|-23|0x2e85cc,31|13|0xbc4a20,-30|12|0xb93823,23|47|0x171615", 95, 854,691,1343,1084);
+	if x1 > -1 then
+		sysLog("奖励信息页面");
+		return true;
+	end
+	
+	local x, y = findMultiColorInRegionFuzzy(0x2c2822,"156|-3|0x1c1b16,76|17|0xffffef,5|-81|0x901d1a,68|-72|0x9f2824,127|-73|0x9a211e", 90, 878, 396, 1302, 857);
+	if x > -1 then
+		sysLog("等待开奖页面");
 		return true;
 	end
 	

@@ -107,6 +107,7 @@ function createTaskListWithSetting(setting)
 			task.chapter = chapter;
 			task.fightType = fightType;
 			task.attackBoss = attackBoss;
+			task.makeTeam = makeTeam;
 			table.insert(taskArray, task);
 		end
     

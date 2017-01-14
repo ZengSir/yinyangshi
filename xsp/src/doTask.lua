@@ -18,7 +18,6 @@ if task.name == "妖怪发现" then
   
   --处理是否继续邀请好友
   
-  
   --判断当前所在页面
   if isPage("探索页面") then
     --进入对应的章节
@@ -26,7 +25,6 @@ if task.name == "妖怪发现" then
     
     sysLog("测试到这里")
     
-    --[[
     mSleep(2000);
     --判断是否是探索或挑战弹出框
     if isExplorationAlert() then
@@ -40,74 +38,76 @@ if task.name == "妖怪发现" then
         --选择组队
         tap(1079,913);
         mSleep(1000);
-        
         --只选择左上角第一个邀请
         tap(853,370);
+        mSleep(1000);
+        
+        --选择邀请
+        tap(1343,984);
+        mSleep(1000);
         
       else
         --选择探索
         tap(1635,922);
       end
-      
     end
-    
-    --]]
-    
-    
   end
   
   --如果是在妖怪发现副本里面， 需要根据情况退出
   if isPage("妖怪发现副本") then
-	
+    
     --探索副本妖怪
-		
-    for tmpi=1,4 do
+    for tmpi=1,6 do
+      
       local x, y = findMonster(task.fightType, task.attackBoss);
       if x ~= -1 and y ~= -1 then
         tap(x,y);
         mSleep(1000);
+        return;
       else
-        if tmpi <= 2 then
+        if tmpi <= 3 then
           --左滑
-          swip(2157,793, 67,811);
+          swip(2100,793, 1000,811);
           mSleep(1000);
         else
           --右滑
-          swip(67,811, 2157,793);
+          swip(1000,811, 2100,793);
           mSleep(1000);
         end
       end
     end
     
-    --根据是否是组队来处理
-    if not isTeam() then
-      --没有在队伍中
-      --等待3秒，发现宝箱
-      mSleep(3000);
-      --自动领取宝箱
-      findReward();
+    
+    --等待3秒，发现宝箱
+    mSleep(3000);
+    --自动领取宝箱
+    findReward();
+    
+    --领取完宝箱之后，判断是否还在妖怪发现副本
+    if isPage("妖怪发现副本") then
+      tap(84, 110);
+      mSleep(1000);
       
-      --领取完宝箱之后，判断是否还在妖怪发现副本
-      if isPage("妖怪发现副本") then
-        tap(84, 110);
-        mSleep(1000);
-        
-        tap(1341, 701);
-        mSleep(1000);
-      end
+      tap(1341, 701);
+      mSleep(1000);
     end
+    
+    
+		--任务结算 点击进入到了对应的章节，并退出一次，表示完成一次任务
+    if task.times == 1 then
+      showHUD(infoHUD,"妖怪发现已停止",18,"0xffff0000","0xffffffff",0,0,0,200,44);
+      removeTask(task);
+    elseif task.times > 1 then
+      task.times = task.times - 1;
+    end
+    
+    
   end
   
   
   
   
-  --任务结算 点击进入到了对应的章节，并退出一次，表示完成一次任务
-  if task.times == 1 then
-    showHUD(infoHUD,"妖怪发现已停止",18,"0xffff0000","0xffffffff",0,0,0,200,44);
-    removeTask(task);
-  elseif task.times > 1 then
-    task.times = task.times - 1;
-  end
+  
 end
 end
 
@@ -151,7 +151,8 @@ if task.name == "只接受邀请" then
       --自动领取宝箱
       findReward();
       
-      --领取完宝箱之后，判断是否还在妖怪发现副本
+      --领取完宝箱之后 等待1秒，判断是否还在妖怪发现副本
+			mSleep(1000);
       if isPage("妖怪发现副本") then
         tap(84, 110);
         mSleep(1000);

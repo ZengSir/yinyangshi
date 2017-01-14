@@ -2,16 +2,24 @@
 --获取通关妖气发现时，纸片人的宝箱
 function findReward () 
   
-  local x, y = findMultiColorInRegionFuzzy(0xaf421d,"22|-14|0xfff4d4,-22|-13|0xfff4d4,-22|18|0xfff4d4,22|19|0xfff4d4,-7|88|0xdfd6c6",90,590,543,1646,1225);
-  if x ~= -1 and y ~= 1 then  --如果找到符合条件的点
-    tap(x, y);
-    mSleep(500);
-    tap(1888, 888);
-    mSleep(1000);
-    
-    --找下一个宝箱
-    findReward();
+  local shouldFind = true;
+  
+  while shouldFind do
+    local x, y = findMultiColorInRegionFuzzy(0xaf421d,"22|-14|0xfff4d4,-22|-13|0xfff4d4,-22|18|0xfff4d4,22|19|0xfff4d4,-7|88|0xdfd6c6",90,590,543,1646,1225);
+    if x ~= -1 and y ~= 1 then  --如果找到符合条件的点
+      tap(x, y);
+      mSleep(1000);
+      tap(1888, 888);
+      mSleep(1000);
+      
+      --需要找下一个宝箱
+      shouldFind = true;
+    else
+      shouldFind = false;
+    end
   end
+  
+  
 end
 
 --在探索页面， 找到对应的章节并进入
@@ -203,7 +211,7 @@ function findChapter (chapter)
     end
   end
   
-  local x17, y17 = findMultiColorInRegionFuzzy(0xf7f2df,"15|-15|0xf8f3e0,31|-3|0xf6f1de,15|15|0xf5f0de,55|-13|0xf6f1de,42|4|0xf8f3e0,73|-3|0xf8f3e0,67|14|0xf8f3e0,99|-17|0xf7f2df",  degree, reactX0, reactY0, reactX1, reactY1);
+  local x17, y17 = findMultiColorInRegionFuzzy(0xf8f3e0,"101|6|0xf8f3e0,86|23|0xf8f3e0,120|16|0xf8f3e0,113|35|0xf8f3e0,103|34|0xf8f3e0,57|3|0xf8f3e0,56|34|0xf8f3e0,149|0|0xf8f3e0", degree, reactX0, reactY0, reactX1, reactY1);
   if x17 > -1 then
     currentChapter = "第十七章";
     sysLog("找到："..currentChapter);
@@ -227,7 +235,7 @@ function findChapter (chapter)
   end
   
   
-  --[[
+  
   for tmpi=1,5 do
     
     sysLog("识别出来的章节文字是："..currentChapter);
@@ -245,49 +253,75 @@ function findChapter (chapter)
     findChapter(chapter);
     
   end
-	
-	--]]
   
 end
 
 
 --找攻击标志
 function findMonster (attackType, attackTypeBoss)
-  
-  --是否打boss 优先打boss
-  if attackTypeBoss then
-    
-  end
-  
-  
-  --找到所有的攻击标志
-  local point = findMultiColorInRegionFuzzyExt(0xd4d4ed,"-8|-46|0xf1aeb8,-17|38|0xeba0a9,36|2|0xdc959c,-32|68|0xff9e34,53|80|0x950846,7|78|0xf8f3e0,-43|89|0x0e110c,23|-37|0xfce26d", 95, 1357, 555, 1360, 557)
-  sysLog("所有的攻击标志:");
-  printTable(point);
-  if #point ~= 0 then  --如果找到符合条件的点
-    for var = 1,#point do
-      local x, y = point[var].x, point[var].y;
+  sysLog("寻找攻击目标："..attackType);
+  for tmpi=1,10 do
+    --是否打boss 优先打boss
+    if attackTypeBoss then
       
-      --根据找到的攻击， 得到下方一个区域，用来判断是哪一种类型的妖怪
-      local x1,y1, x2,y2 =  x - 70, y + 100, x + 70, y+242;
-      
-      if attackType == "打全部" then
-        return x, y;
-      elseif attackType == "打经验怪" then
-        local x0, y0 = findColorInRegionFuzzy(0xeddaa7,"-39|-9|0x2c6f8c,31|-22|0x2d717f,-29|16|0x88171a,34|-3|0x8a191b,2|10|0x2a0d04,5|30|0xe7990e,43|38|0xf7d605", 90, x1, y1, x2, y2);
-        if x0 ~= -1 and y0 ~= -1 then  --如果找到符合条件的点
-          return x, y;
-        end
-      elseif attackType == "打金钱怪" then
-        
-      elseif attackType == "打经验和金钱" then
-        
+      local bossX, bossY = findMultiColorInRegionFuzzy(0x452b57,"-51|-22|0xcb3b3c,52|-38|0xcd3131,2|29|0xfffffc,52|50|0xd4a344,-6|58|0xeca6ad,10|-55|0xeeb3b9", 95, 0, 0, 1241, 2207)
+      if bossX > -1 then
+        return bossX, bossY;
       end
+      
+      
     end
+    
+    --找到所有的攻击标志
+    local point = findMultiColorInRegionFuzzyExt(0xe8eafb,"-2|-77|0x6e4521,-76|-2|0x6c4421,73|-3|0x68411f,5|82|0xf8f3e0,41|58|0x57351a", 98, 1,479,2200,1042);
+    sysLog("所有的攻击标志:");
+    printTable(point);
+    if #point ~= 0 then  --如果找到符合条件的点
+      for var = 1,#point do
+        local x, y = point[var].x, point[var].y;
+        
+        --根据找到的攻击， 得到下方一个区域，用来判断是哪一种类型的妖怪
+        local x1,y1, x2,y2 =  x - 100, y + 100, x + 100, _height;
+        
+        if attackType == "打全部" then
+          sysLog("打全部");
+          return x, y;
+        elseif attackType == "打经验怪" then
+          local x0, y0 = findMultiColorInRegionFuzzy(0xd07a17,"9|-1|0xddcca2,-3|11|0xf0bb03", 95, x1, y1, x2, y2);
+          if x0 ~= -1 and y0 ~= -1 then  --如果找到符合条件的点
+            sysLog("打经验怪");
+            return x, y;
+          end
+        elseif attackType == "打金钱怪" then
+          local x0, y0 = findMultiColorInRegionFuzzy(0xe7cc0c,"5|-9|0xf0b409,-8|-36|0xd9cd84,-6|-32|0xd5c77e", 95, x1, y1, x2, y2);
+          if x0 ~= -1 and y0 ~= -1 then  --如果找到符合条件的点
+            sysLog("打金钱怪");
+            return x, y;
+          end
+          
+          
+        elseif attackType == "打经验和金钱" then
+          local x0, y0 = findMultiColorInRegionFuzzy(0xd07a17,"9|-1|0xddcca2,-3|11|0xf0bb03", 95, x1, y1, x2, y2);
+          if x0 ~= -1 and y0 ~= -1 then  --如果找到符合条件的点
+            sysLog("打经验怪");
+            return x, y;
+          end
+          
+          local x0, y0 = findMultiColorInRegionFuzzy(0xe7cc0c,"5|-9|0xf0b409,-8|-36|0xd9cd84,-6|-32|0xd5c77e", 95, x1, y1, x2, y2);
+          if x0 ~= -1 and y0 ~= -1 then  --如果找到符合条件的点
+            sysLog("打金钱怪");
+            return x, y;
+          end				
+        end
+      end
+    else
+      return -1, -1;
+    end
+    
+    mSleep(100);
   end
   
   return -1, -1;
-  
 end
 
 --找Boss
@@ -303,10 +337,10 @@ function findExpMonster ()
   if #point ~= 0 then  --如果找到符合条件的点
     for var = 1,#point do
       local x, y = point[var].x, point[var].y;
-      local x1,y1, x2,y2 =  x - 70, y + 100, x + 70, y+242;
+      local x1,y1, x2,y2 =  x - 70, y + 100, x + 70, _height;
       
       --根据找到的攻击， 得到下方一个区域，用来判断是哪一种类型的妖怪
-      local x0, y0 = findColorInRegionFuzzy(0xeddaa7,"-39|-9|0x2c6f8c,31|-22|0x2d717f,-29|16|0x88171a,34|-3|0x8a191b,2|10|0x2a0d04,5|30|0xe7990e,43|38|0xf7d605", 90, 0, 410, 2206, 1217)
+      local x0, y0 = findMultiColorInRegionFuzzy(0x2b647a,"10|16|0x7c1414,18|3|0xbca480", 95, 0, 410, 2206, 1217)
       if x0 ~= -1 and y0 ~= -1 then  --如果找到符合条件的点
         return x, y;
       end
